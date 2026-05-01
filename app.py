@@ -1,12 +1,3 @@
-"""Streamlit UI for the BIS Standards Recommendation Engine.
-
-Run locally:
-    streamlit run app.py
-
-The UI is intentionally simple: enter a free-text query describing your product
-or process and get the top BIS Indian Standards that apply, with a short
-extractive rationale and a confidence score.
-"""
 from __future__ import annotations
 
 import os
@@ -16,12 +7,12 @@ from pathlib import Path
 
 import streamlit as st
 
-# Allow `streamlit run app.py` from anywhere.
+
 ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.rag_pipeline import BISRAGPipeline  # noqa: E402
+from src.rag_pipeline import BISRAGPipeline  
 
 st.set_page_config(
     page_title="BIS Standards Recommender",
