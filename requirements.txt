@@ -1,0 +1,20 @@
+# BIS Standards Recommendation Engine — runtime dependencies
+# Install with:  pip install -r requirements.txt
+# (For CPU-only torch on Linux, use:  pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu)
+
+# --- Core RAG pipeline ---
+pymupdf>=1.24.0
+rank-bm25>=0.2.2
+scikit-learn>=1.3.0
+numpy>=1.26.0
+faiss-cpu>=1.7.4
+
+# --- Embeddings (sentence-transformers pulls a CPU torch wheel via the extra-index-url) ---
+sentence-transformers>=2.7.0
+torch>=2.2.0
+
+# --- Streamlit UI ---
+streamlit>=1.32.0
+
+# --- PyTorch vision support (required by transformers internals) ---
+torchvision>=0.17.0
