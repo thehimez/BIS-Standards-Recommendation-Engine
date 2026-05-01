@@ -2,7 +2,7 @@
 
 > **A production-ready, hybrid Retrieval-Augmented-Generation (RAG) pipeline that recommends the most relevant Bureau of Indian Standards (BIS) documents for any free-text query about a building material, product, or process.**
 
-Built for the **BIS × StackSlash Hackathon 2025**.
+Built for the **BIS × Sigma Squad AI Hackathon 2025**.
 
 ---
 
