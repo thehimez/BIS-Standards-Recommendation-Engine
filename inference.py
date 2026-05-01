@@ -1,15 +1,3 @@
-"""Hackathon-mandated entry point.
-
-Usage (judges):
-    python inference.py --input hidden_private_dataset.json --output team_results.json
-
-Reads a list of ``{"id": ..., "query": ...}`` items, runs each query through the
-RAG pipeline, and writes a list of:
-
-    {"id": ..., "retrieved_standards": [...], "latency_seconds": ...}
-
-The output schema is identical to the one accepted by ``eval_script.py``.
-"""
 from __future__ import annotations
 
 import argparse
@@ -18,12 +6,12 @@ import sys
 import time
 from pathlib import Path
 
-# Allow running from the repo root directly.
+
 ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.rag_pipeline import BISRAGPipeline  # noqa: E402
+from src.rag_pipeline import BISRAGPipeline 
 
 
 def run(input_path: str, output_path: str, top_k: int = 5) -> None:
@@ -52,7 +40,7 @@ def run(input_path: str, output_path: str, top_k: int = 5) -> None:
             "retrieved_standards": retrieved,
             "latency_seconds": round(latency, 4),
         }
-        # Carry expected_standards through for self-evaluation runs.
+        
         if "expected_standards" in it:
             out["expected_standards"] = it["expected_standards"]
         results.append(out)
