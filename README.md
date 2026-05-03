@@ -19,7 +19,7 @@
 
 # 💻 Local Setup
 
-Run the BIS Standards Recommendation Engine locally in under **3 minutes**.
+Run the BIS Standards Recommendation Engine locally in under **2 minutes**.
 
 ---
 
