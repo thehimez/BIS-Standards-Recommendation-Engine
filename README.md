@@ -17,53 +17,150 @@
 
 ## 🚀 Run This Project (2-Min Setup)
 
-### ⚠️ Requirements
+# 💻 Local Setup
 
-* Python **3.11 or higher** (recommended)
-* pip installed
+Run the BIS Standards Recommendation Engine locally in under **3 minutes**.
 
 ---
 
-### 1. Clone Repository
+## ⚠️ Prerequisites
 
-```bash
+| Tool   | Version                             | Why                             |
+| ------ | ----------------------------------- | ------------------------------- |
+| Python | **3.11+ recommended** (3.10+ works) | Required for torch + embeddings |
+| pip    | Latest                              | Install dependencies            |
+| OS     | macOS / Linux / WSL / Windows       | Fully supported                 |
+| RAM    | ≥ 2 GB free                         | Model + index (~250 MB)         |
+| Disk   | ~500 MB                             | Dependencies + cache            |
+
+👉 Check Python version:
+
+```bash id="checkpy"
+python --version
+```
+
+---
+
+## 🚀 Setup Steps
+
+### 1. Clone the Repository
+
+```bash id="clonecmd"
 git clone https://github.com/thehimez/BIS-Standards-Recommendation-Engine.git
 cd BIS-Standards-Recommendation-Engine
 ```
 
 ---
 
-### 2. Install Dependencies
+### 2. Create Virtual Environment
 
-```bash
-pip install -r requirements.txt
+```bash id="venvcreate"
+python -m venv .venv
+```
+
+Activate:
+
+**Mac/Linux**
+
+```bash id="activateunix"
+source .venv/bin/activate
+```
+
+**Windows**
+
+```bash id="activatewin"
+.venv\Scripts\activate
 ```
 
 ---
 
-### 3. Run the Web App
+### 3. Install Dependencies (CPU optimized)
 
-```bash
+```bash id="installcmd"
+pip install --upgrade pip
+pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+```
+
+---
+
+### 4. First-Time Setup (IMPORTANT)
+
+```bash id="buildcmd"
+python -c "from src.rag_pipeline import BISRAGPipeline; BISRAGPipeline().load()"
+```
+
+👉 This step:
+
+* Downloads embedding model (~90MB)
+* Builds FAISS index
+* Takes ~60–90 seconds (one-time)
+
+---
+
+### 5. Run the Web App
+
+```bash id="runapp"
 streamlit run app.py
 ```
 
 ---
 
-### 4. Open in Browser
+### 6. Open in Browser
 
 http://localhost:8501
 
 ---
 
-## ⚡ Notes
+## ⚡ First Run Behavior
 
-* First run may take ~10–15 seconds (model warmup)
-* Runs fully on CPU (no GPU required)
-* No external APIs used
+* Initial setup: **~60–90 seconds**
+* After that:
+
+  * Startup: < 2 seconds
+  * Query latency: ~30 ms
 
 ---
 
-## 🌐 Live Demo
+## 🧪 Run Inference (Hackathon Format)
+
+```bash id="infercmd"
+python inference.py --input data/public_test_set.json --output public_results.json
+```
+
+---
+
+## 📊 Evaluate Results
+
+```bash id="evalcmd"
+python eval_script.py --results public_results.json
+```
+
+---
+
+## ⚠️ Troubleshooting
+
+| Issue                | Cause                   | Fix                      |
+| -------------------- | ----------------------- | ------------------------ |
+| python3.11 not found | Not installed           | Use `python` instead     |
+| torch not installed  | Missing CPU index       | Re-run install step      |
+| First run slow       | Model downloading       | Normal, wait once        |
+| No space left        | Torch is large (~200MB) | Free disk space          |
+| Streamlit blank page | Browser issue           | Disable extensions       |
+| Port already in use  | Another app running     | Use `--server.port 8502` |
+
+---
+
+## 💡 Pro Tip
+
+If setup fails, try:
+
+```bash id="fallback"
+python -m pip install -r requirements.txt
+```
+
+---
+
+## 🌐 Live Demo (No Setup Needed)
 
 https://bisstandardrecomender.streamlit.app/
 
