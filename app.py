@@ -376,6 +376,40 @@ section[data-testid="stMain"] .block-container {
     border-radius: 4px !important;
     border-left: 3px solid var(--bis-saffron) !important;
 }
+
+/* ── Sample query chip buttons in sidebar ── */
+section[data-testid="stSidebar"] .stButton > button {
+    background: var(--bis-white) !important;
+    border: 1px solid var(--bis-border) !important;
+    border-radius: 20px !important;
+    padding: 6px 12px !important;
+    font-size: 11.5px !important;
+    font-weight: 500 !important;
+    color: var(--bis-muted) !important;
+    width: 100% !important;
+    text-align: left !important;
+    margin-bottom: 5px !important;
+    white-space: normal !important;
+    height: auto !important;
+    line-height: 1.5 !important;
+    letter-spacing: .1px !important;
+    transition: all .15s !important;
+}
+section[data-testid="stSidebar"] .stButton > button:hover {
+    background: var(--bis-light) !important;
+    border-color: var(--bis-navy) !important;
+    color: var(--bis-navy) !important;
+    transform: translateX(2px) !important;
+}
+section[data-testid="stSidebar"] .stButton > button[data-active="true"],
+section[data-testid="stSidebar"] .stButton > button:focus {
+    background: var(--bis-navy) !important;
+    border-color: var(--bis-navy) !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -457,7 +491,71 @@ with st.sidebar:
         "Masonry cement for non-structural mortars.",
         "Supersulphated cement for marine works.",
     ]
-    pick = st.selectbox("Choose a sample", [""] + samples, index=0)
+
+    # Short labels for the chips
+    chip_labels = [
+        "33 Grade OPC",
+        "Hollow Concrete Blocks",
+        "Portland Pozzolana Cement",
+        "White Portland Cement",
+        "Reinforced Concrete Pipes",
+        "Asbestos Cement Sheets",
+        "Masonry Cement",
+        "Supersulphated Cement",
+    ]
+
+    if "picked_sample" not in st.session_state:
+        st.session_state.picked_sample = ""
+
+    st.markdown("""
+    <style>
+    div[data-testid="stButton"].chip-btn > button {
+        background: #fff !important;
+        border: 1px solid #C8D4E8 !important;
+        border-radius: 20px !important;
+        padding: 5px 11px !important;
+        font-size: 11.5px !important;
+        font-weight: 500 !important;
+        color: #5A6A8A !important;
+        width: 100% !important;
+        text-align: left !important;
+        margin-bottom: 5px !important;
+        transition: all .15s !important;
+        white-space: normal !important;
+        height: auto !important;
+        line-height: 1.4 !important;
+    }
+    div[data-testid="stButton"].chip-btn > button:hover {
+        background: #EEF3FF !important;
+        border-color: #003580 !important;
+        color: #003580 !important;
+    }
+    div[data-testid="stButton"].chip-btn-active > button {
+        background: #003580 !important;
+        border-color: #003580 !important;
+        color: #fff !important;
+        font-weight: 600 !important;
+    }
+    div[data-testid="stButton"].chip-btn-active > button:hover {
+        background: #002060 !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    for label, full in zip(chip_labels, samples):
+        is_active = st.session_state.picked_sample == full
+        css_class = "chip-btn-active" if is_active else "chip-btn"
+        # Inject class via a wrapper hack
+        st.markdown(f'<div data-testid="stButton" class="{css_class}">', unsafe_allow_html=True)
+        if st.button(f"{'✓ ' if is_active else ''}{label}", key=f"chip_{label}"):
+            if st.session_state.picked_sample == full:
+                st.session_state.picked_sample = ""
+            else:
+                st.session_state.picked_sample = full
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    pick = st.session_state.picked_sample
 
     st.markdown('<div class="sidebar-head">Quick Links</div>', unsafe_allow_html=True)
     st.markdown("""
