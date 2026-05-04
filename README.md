@@ -19,6 +19,8 @@
 
 <img src="demo.jpg" width="100%"/>
 
+[![Watch the video](https://img.youtube.com/vi/La95MIYdW_M/0.jpg)](https://www.youtube.com/watch?v=La95MIYdW_M)
+
 # 💻 Local Setup
 
 Run the BIS Standards Recommendation Engine locally in under **2 minutes**.
