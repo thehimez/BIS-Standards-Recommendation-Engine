@@ -118,17 +118,19 @@ html, body, [class*="css"] {
     background: rgba(255,255,255,.05);
 }
 
-/* ── Sidebar — always visible, fixed to left, below top banners ── */
+/* ────────────────────────────────────────────────
+   SIDEBAR — fixed, flush, zero gaps
+──────────────────────────────────────────────── */
 section[data-testid="stSidebar"] {
     background: var(--bis-white) !important;
     border-right: 1px solid var(--bis-border) !important;
-    min-width: 260px !important;
-    max-width: 260px !important;
-    width: 260px !important;
-    height: calc(100vh - 152px) !important;
+    min-width: 240px !important;
+    max-width: 240px !important;
+    width: 240px !important;
     position: fixed !important;
     top: 152px !important;
     left: 0 !important;
+    bottom: 40px !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     z-index: 100 !important;
@@ -137,49 +139,52 @@ section[data-testid="stSidebar"] {
     transform: none !important;
     transition: none !important;
 }
-section[data-testid="stSidebar"] .block-container {
-    padding-top: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    padding-bottom: 0 !important;
-    margin-top: 0 !important;
-}
 
-/* ── Kill every source of top gap in the sidebar ── */
-section[data-testid="stSidebar"] > div:first-child {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-}
-section[data-testid="stSidebar"] .block-container > div:first-child {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-}
+/* Zero out every layer of margin/padding Streamlit injects */
+section[data-testid="stSidebar"],
+section[data-testid="stSidebar"] > div,
+section[data-testid="stSidebar"] > div > div,
+section[data-testid="stSidebar"] .block-container,
 section[data-testid="stSidebar"] .block-container > div,
 section[data-testid="stSidebar"] .block-container > div > div,
 section[data-testid="stSidebar"] [data-testid="stVerticalBlock"],
-section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:first-child {
-    margin-top: 0 !important;
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div {
     padding-top: 0 !important;
-    gap: 0 !important;
+    margin-top: 0 !important;
+    padding-bottom: 0 !important;
 }
-/* Streamlit injects an empty spacer div at the top — collapse it */
-section[data-testid="stSidebar"] .block-container > div > div[style*="height"] {
+
+/* Collapse Streamlit injected spacer divs */
+section[data-testid="stSidebar"] .block-container > div > div[style*="height"],
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div[style*="flex-direction"] > div:empty {
     display: none !important;
     height: 0 !important;
+    min-height: 0 !important;
 }
-/* Hide the collapse/expand toggle button */
+
+/* Hide collapse toggle */
 section[data-testid="stSidebar"] button[kind="header"],
 button[data-testid="collapsedControl"],
 [data-testid="stSidebarCollapsedControl"] {
     display: none !important;
 }
 
-/* ── Push the main content area to the right of the fixed sidebar ── */
+/* Zero gap between stacked elements inside sidebar */
+section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
+    gap: 0 !important;
+}
+section[data-testid="stSidebar"] [data-testid="element-container"] {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* ── Push main content right of sidebar ── */
 section[data-testid="stMain"] {
-    margin-left: 260px !important;
+    margin-left: 240px !important;
     margin-top: 0 !important;
 }
-/* Full-width banners span the entire viewport including over sidebar */
+
+/* ── Fixed banners span full viewport ── */
 .gov-banner, .bis-header, .bis-nav {
     position: fixed !important;
     left: 0 !important;
@@ -188,52 +193,61 @@ section[data-testid="stMain"] {
     width: 100vw !important;
     box-sizing: border-box !important;
 }
-.gov-banner  { top: 0 !important; }
-.bis-header  { top: 28px !important; }
-.bis-nav     { top: 122px !important; }
+.gov-banner { top: 0 !important; }
+.bis-header { top: 28px !important; }
+.bis-nav    { top: 122px !important; }
 
-/* Push main content below the fixed banners */
+/* ── Main content padding ── */
 section[data-testid="stMain"] .block-container {
     padding-top: 170px !important;
     padding-left: 3rem !important;
     padding-right: 3rem !important;
+    padding-bottom: 60px !important;
     max-width: 960px !important;
     margin-right: auto !important;
 }
 
-/* ── Sidebar section headers ── */
+/* ────────────────────────────────────────────────
+   SIDEBAR SECTION HEADERS — flush, no margin
+──────────────────────────────────────────────── */
 .sidebar-head {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     color: var(--bis-saffron);
     text-transform: uppercase;
-    letter-spacing: .8px;
+    letter-spacing: .9px;
     border-left: 3px solid var(--bis-saffron);
     background: rgba(255,107,0,.05);
-    padding: 9px 14px;
-    margin: 0;
+    padding: 8px 12px;
+    margin: 0 !important;
     display: block;
     width: 100%;
     box-sizing: border-box;
+    line-height: 1;
 }
 
-/* ── Slider — sits inside a padded section below its header ── */
+/* ────────────────────────────────────────────────
+   SLIDER — padded container via HTML wrapper
+──────────────────────────────────────────────── */
+.sidebar-slider-wrap {
+    padding: 10px 14px 14px 14px;
+    box-sizing: border-box;
+}
+
 section[data-testid="stSidebar"] .stSlider {
-    padding: 10px 14px 12px !important;
     margin: 0 !important;
-    box-sizing: border-box !important;
+    padding: 0 !important;
 }
 section[data-testid="stSidebar"] .stSlider label {
-    font-size: 12px !important;
+    font-size: 11px !important;
     font-weight: 600 !important;
     color: var(--bis-muted) !important;
     text-transform: uppercase;
     letter-spacing: .5px;
-    margin-bottom: 6px !important;
     display: block !important;
+    margin-bottom: 4px !important;
+    padding-top: 0 !important;
 }
-
-/* ── Slider accent ── */
 .stSlider [data-baseweb="slider"] [role="slider"] {
     background: var(--bis-navy) !important;
 }
@@ -241,24 +255,36 @@ section[data-testid="stSidebar"] .stSlider label {
     background: var(--bis-navy) !important;
 }
 
-/* ── Sample query chip buttons in sidebar ── */
+/* ────────────────────────────────────────────────
+   CHIP BUTTONS — padded container via HTML wrapper
+──────────────────────────────────────────────── */
+.sidebar-chips-wrap {
+    padding: 8px 10px 10px 10px;
+    box-sizing: border-box;
+}
+
+section[data-testid="stSidebar"] .stButton {
+    margin: 0 !important;
+    padding: 0 !important;
+}
 section[data-testid="stSidebar"] .stButton > button {
     background: var(--bis-white) !important;
     border: 1px solid var(--bis-border) !important;
     border-radius: 20px !important;
-    padding: 7px 14px !important;
+    padding: 6px 14px !important;
     font-size: 12px !important;
     font-weight: 500 !important;
     color: var(--bis-muted) !important;
     width: 100% !important;
     text-align: left !important;
-    margin-bottom: 0 !important;
+    margin: 3px 0 !important;
     white-space: normal !important;
     height: auto !important;
     min-height: 0 !important;
-    line-height: 1.4 !important;
+    line-height: 1.35 !important;
     letter-spacing: .1px !important;
     transition: all .15s !important;
+    box-sizing: border-box !important;
 }
 section[data-testid="stSidebar"] .stButton > button:hover {
     background: var(--bis-light) !important;
@@ -266,28 +292,9 @@ section[data-testid="stSidebar"] .stButton > button:hover {
     color: var(--bis-navy) !important;
     transform: translateX(2px) !important;
 }
-section[data-testid="stSidebar"] .stButton > button[data-active="true"],
 section[data-testid="stSidebar"] .stButton > button:focus {
-    background: var(--bis-navy) !important;
-    border-color: var(--bis-navy) !important;
-    color: #fff !important;
-    font-weight: 600 !important;
     box-shadow: none !important;
     outline: none !important;
-}
-
-/* ── Chips section: add a top padding wrapper and proper gap between chips ── */
-section[data-testid="stSidebar"] .stButton {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    padding: 0 10px !important;
-}
-section[data-testid="stSidebar"] [data-testid="element-container"] {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-}
-section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
-    gap: 6px !important;
 }
 
 /* ── Selectbox label ── */
@@ -299,7 +306,7 @@ section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
     letter-spacing: .5px;
 }
 
-/* ── Primary button ── */
+/* ── Primary (main area) button ── */
 .stButton > button[kind="primary"] {
     background: var(--bis-navy) !important;
     border: none !important;
@@ -357,7 +364,7 @@ section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
     color: var(--bis-navy) !important;
 }
 
-/* ── Result cards (st.container with border) ── */
+/* ── Result cards ── */
 [data-testid="stVerticalBlockBorderWrapper"] > div {
     border: 1px solid var(--bis-border) !important;
     border-radius: 6px !important;
@@ -379,7 +386,6 @@ section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
 }
 .bis-breadcrumb .sep { color: var(--bis-border); }
 .bis-breadcrumb .current { color: var(--bis-navy); font-weight: 500; }
-
 .bis-page-title {
     display: flex;
     align-items: center;
@@ -404,7 +410,7 @@ section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
     letter-spacing: .5px;
 }
 
-/* ── Result card row header ── */
+/* ── Result card row ── */
 .result-row {
     display: flex;
     align-items: center;
@@ -443,7 +449,7 @@ section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
     white-space: nowrap;
 }
 
-/* ── Footer — full width, fixed at bottom ── */
+/* ── Footer ── */
 .bis-footer {
     background: var(--bis-navy-dark);
     border-top: 3px solid var(--bis-saffron);
@@ -460,10 +466,6 @@ section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
     width: 100vw !important;
     z-index: 150 !important;
     box-sizing: border-box !important;
-}
-/* Add bottom padding to main so content isn't hidden behind footer */
-section[data-testid="stMain"] .block-container {
-    padding-bottom: 60px !important;
 }
 
 /* ── Expander ── */
@@ -547,12 +549,16 @@ def get_cached_standard_count() -> int | None:
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
-    # Search Settings section
-    st.markdown('<div class="sidebar-head">Search Settings</div>', unsafe_allow_html=True)
-    top_k = st.slider("Number of results", 1, 10, 5)
 
-    # Sample Queries section
+    # SEARCH SETTINGS
+    st.markdown('<div class="sidebar-head">Search Settings</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-slider-wrap">', unsafe_allow_html=True)
+    top_k = st.slider("Number of results", 1, 10, 5)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # SAMPLE QUERIES
     st.markdown('<div class="sidebar-head">Sample Queries</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-chips-wrap">', unsafe_allow_html=True)
 
     samples = [
         "We manufacture 33 Grade Ordinary Portland Cement.",
@@ -564,7 +570,6 @@ with st.sidebar:
         "Masonry cement for non-structural mortars.",
         "Supersulphated cement for marine works.",
     ]
-
     chip_labels = [
         "33 Grade OPC",
         "Hollow Concrete Blocks",
@@ -579,30 +584,21 @@ with st.sidebar:
     if "picked_sample" not in st.session_state:
         st.session_state.picked_sample = ""
 
-    # Small top spacer so first chip doesn't kiss the header
-    st.markdown('<div style="height:6px"></div>', unsafe_allow_html=True)
-
     for label, full in zip(chip_labels, samples):
         is_active = st.session_state.picked_sample == full
-        if st.button(
-            f"{'✓ ' if is_active else ''}{label}",
-            key=f"chip_{label}",
-        ):
-            if st.session_state.picked_sample == full:
-                st.session_state.picked_sample = ""
-            else:
-                st.session_state.picked_sample = full
+        prefix = "✓ " if is_active else ""
+        if st.button(f"{prefix}{label}", key=f"chip_{label}"):
+            st.session_state.picked_sample = "" if is_active else full
             st.rerun()
 
-    # Small bottom spacer before Quick Links
-    st.markdown('<div style="height:4px"></div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
     pick = st.session_state.picked_sample
 
-    # Quick Links section
+    # QUICK LINKS
     st.markdown('<div class="sidebar-head">Quick Links</div>', unsafe_allow_html=True)
     st.markdown("""
-    <div style="font-size:13px;color:#5A6A8A;line-height:2.4;padding:8px 14px 12px;">
+    <div style="padding:10px 14px 16px;font-size:13px;color:#5A6A8A;line-height:2.3;">
       📄 &nbsp;SP 21 : 2005 Handbook<br>
       🌐 &nbsp;BIS Online Portal<br>
       ✅ &nbsp;IS Mark Certification<br>
