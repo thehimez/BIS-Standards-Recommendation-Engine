@@ -138,9 +138,17 @@ section[data-testid="stSidebar"] {
     transition: none !important;
 }
 section[data-testid="stSidebar"] .block-container {
-    padding-top: 16px !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+/* Remove Streamlit's default top spacer inside sidebar */
+section[data-testid="stSidebar"] .block-container > div:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+    gap: 0 !important;
 }
 /* Hide the collapse/expand toggle button */
 section[data-testid="stSidebar"] button[kind="header"],
@@ -184,8 +192,14 @@ section[data-testid="stMain"] .block-container {
     letter-spacing: .8px;
     border-left: 3px solid var(--bis-saffron);
     background: rgba(255,107,0,.04);
-    padding: 7px 12px;
-    margin: 10px -1rem 6px;
+    padding: 7px 14px;
+    margin: 0 0 6px 0;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+.sidebar-head:first-child {
+    margin-top: 0 !important;
 }
 
 /* ── Slider label ── */
@@ -406,9 +420,17 @@ section[data-testid="stSidebar"] .stButton > button {
     letter-spacing: .1px !important;
     transition: all .15s !important;
 }
-/* Collapse the gap Streamlit adds between each button widget */
+/* Collapse ALL vertical gaps between sidebar widgets */
 section[data-testid="stSidebar"] .stButton {
-    margin-bottom: 4px !important;
+    margin-top: 0 !important;
+    margin-bottom: 2px !important;
+}
+section[data-testid="stSidebar"] [data-testid="element-container"] {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
+    gap: 2px !important;
 }
 section[data-testid="stSidebar"] .stButton > button:hover {
     background: var(--bis-light) !important;
