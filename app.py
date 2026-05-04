@@ -141,14 +141,22 @@ section[data-testid="stSidebar"] .block-container {
     padding-top: 0 !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
 }
-/* Remove Streamlit's default top spacer inside sidebar */
-section[data-testid="stSidebar"] .block-container > div:first-child {
+/* Nuke every possible source of top gap in the sidebar */
+section[data-testid="stSidebar"] .block-container > div,
+section[data-testid="stSidebar"] .block-container > div > div,
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"],
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:first-child {
     margin-top: 0 !important;
     padding-top: 0 !important;
-}
-section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
     gap: 0 !important;
+}
+/* Streamlit injects an empty spacer div at the top — collapse it */
+section[data-testid="stSidebar"] .block-container > div > div[style*="height"] {
+    display: none !important;
+    height: 0 !important;
 }
 /* Hide the collapse/expand toggle button */
 section[data-testid="stSidebar"] button[kind="header"],
