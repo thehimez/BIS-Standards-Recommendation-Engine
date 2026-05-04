@@ -19,7 +19,11 @@
 
 <img src="demo.jpg" width="100%"/>
 
-[![Watch the video](https://img.youtube.com/vi/La95MIYdW_M/0.jpg)](https://www.youtube.com/watch?v=La95MIYdW_M)
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=La95MIYdW_M">
+    <img src="https://img.youtube.com/vi/La95MIYdW_M/maxresdefault.jpg" width="600"/>
+  </a>
+</p>
 
 # 💻 Local Setup
 
