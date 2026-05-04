@@ -117,25 +117,18 @@ html, body, [class*="css"] {
     background: rgba(255,255,255,.05);
 }
 
-/* ── Sidebar — fixed position ── */
+/* ── Sidebar — sticky so it stays visible while main content scrolls ── */
 section[data-testid="stSidebar"] {
     background: var(--bis-white) !important;
     border-right: 1px solid var(--bis-border) !important;
-    position: fixed !important;
+    position: sticky !important;
     top: 0 !important;
-    left: 0 !important;
     height: 100vh !important;
     overflow-y: auto !important;
-    z-index: 999 !important;
+    align-self: flex-start !important;
 }
 section[data-testid="stSidebar"] .block-container {
     padding-top: 16px !important;
-}
-
-/* ── Push main content right so it isn't hidden behind fixed sidebar ── */
-.main .block-container,
-section[data-testid="stMain"] > div:first-child {
-    margin-left: var(--sidebar-width, 21rem) !important;
 }
 
 /* ── Sidebar section headers ── */
