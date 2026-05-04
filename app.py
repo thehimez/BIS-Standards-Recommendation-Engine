@@ -37,11 +37,10 @@ st.markdown("""
     --bis-light:     #EEF3FF;
     --bis-white:     #FFFFFF;
 
-    /* Heights of fixed banners — adjust here if layout shifts */
     --h-govbanner: 29px;
     --h-header:    93px;
     --h-nav:       37px;
-    --h-banners:   159px;   /* sum of the three above */
+    --h-banners:   159px;
 }
 
 /* ── Global reset ── */
@@ -53,7 +52,7 @@ html, body, [class*="css"] {
 .block-container { padding-top: 0 !important; }
 
 /* ──────────────────────────────────────────────────────────
-   FIXED BANNERS — gov bar / site header / nav
+   FIXED BANNERS
 ────────────────────────────────────────────────────────── */
 .gov-banner, .bis-header, .bis-nav {
     position: fixed !important;
@@ -142,9 +141,6 @@ html, body, [class*="css"] {
 
 /* ──────────────────────────────────────────────────────────
    SIDEBAR
-   top = exact bottom of all 3 fixed banners
-   We also completely suppress Streamlit's own header row
-   (the one containing the «» collapse button).
 ────────────────────────────────────────────────────────── */
 section[data-testid="stSidebar"] {
     background: var(--bis-white) !important;
@@ -167,7 +163,7 @@ section[data-testid="stSidebar"] {
 }
 section[data-testid="stSidebar"]::-webkit-scrollbar { display: none; }
 
-/* ── Nuke EVERY layer of Streamlit's injected spacing ── */
+/* Zero every layer of Streamlit spacing */
 section[data-testid="stSidebar"],
 section[data-testid="stSidebar"] > div,
 section[data-testid="stSidebar"] > div > div,
@@ -183,24 +179,20 @@ section[data-testid="stSidebar"] [data-testid="element-container"] {
     padding-bottom: 0 !important;
 }
 
-/* ── Kill the gap Streamlit reserves for the collapse button ── */
+/* Kill collapse button row */
 section[data-testid="stSidebar"] [data-testid="stSidebarHeader"],
 section[data-testid="stSidebar"] > div > div:first-child:has(button),
-section[data-testid="stSidebar"] > div:first-child > div:first-child {
+section[data-testid="stSidebar"] > div:first-child > div:first-child,
+button[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"],
+section[data-testid="stSidebar"] button[kind="header"] {
     display: none !important;
     height: 0 !important;
     min-height: 0 !important;
     overflow: hidden !important;
 }
 
-/* Hide the collapse toggle button wherever it appears */
-button[data-testid="collapsedControl"],
-[data-testid="stSidebarCollapsedControl"],
-section[data-testid="stSidebar"] button[kind="header"] {
-    display: none !important;
-}
-
-/* ── Destroy inline-height spacer divs Streamlit injects ── */
+/* Kill inline height spacer divs */
 section[data-testid="stSidebar"] div[style*="height:"]:empty,
 section[data-testid="stSidebar"] div[style*="min-height:"]:empty {
     display: none !important;
@@ -208,12 +200,11 @@ section[data-testid="stSidebar"] div[style*="min-height:"]:empty {
     min-height: 0 !important;
 }
 
-/* Zero gap between stacked widget rows */
 section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
     gap: 0 !important;
 }
 
-/* ── Push main content area right and down ── */
+/* ── Main layout ── */
 section[data-testid="stMain"] {
     margin-left: 232px !important;
 }
@@ -246,9 +237,7 @@ section[data-testid="stMain"] .block-container {
 }
 
 /* ──────────────────────────────────────────────────────────
-   SLIDER
-   Give it generous padding by targeting the widget's own
-   outermost div rendered by Streamlit.
+   SLIDER — padding + visible track
 ────────────────────────────────────────────────────────── */
 section[data-testid="stSidebar"] [data-testid="stSlider"] {
     padding: 12px 14px 16px !important;
@@ -264,11 +253,42 @@ section[data-testid="stSidebar"] [data-testid="stSlider"] label {
     display: block !important;
     margin-bottom: 8px !important;
 }
-.stSlider [data-baseweb="slider"] [role="slider"] {
+
+/* Thumb colour */
+section[data-testid="stSidebar"] [data-testid="stSlider"] [role="slider"] {
     background: var(--bis-navy) !important;
+    border: 2px solid var(--bis-white) !important;
+    box-shadow: 0 0 0 2px var(--bis-navy) !important;
+    width: 18px !important;
+    height: 18px !important;
 }
-.stSlider [data-baseweb="slider"] div[data-testid="stThumbValue"] {
+
+/* ── TRACK — the bar the thumb slides along ── */
+/* BaseWeb renders the track as the first div child of the slider root */
+section[data-testid="stSidebar"] [data-testid="stSlider"] [data-baseweb="slider"] > div:first-child {
+    height: 4px !important;
+    border-radius: 2px !important;
+    background: var(--bis-border) !important;   /* full grey rail */
+}
+/* The filled (left) portion of the track */
+section[data-testid="stSidebar"] [data-testid="stSlider"] [data-baseweb="slider"] > div:first-child > div:first-child {
+    background: var(--bis-saffron) !important;  /* orange filled section */
+    border-radius: 2px !important;
+}
+
+/* Thumb value tooltip */
+section[data-testid="stSidebar"] [data-testid="stSlider"] div[data-testid="stThumbValue"] {
     background: var(--bis-navy) !important;
+    color: var(--bis-white) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    border-radius: 3px !important;
+}
+
+/* Hide min/max tick labels */
+section[data-testid="stSidebar"] [data-testid="stSlider"] [data-testid="stSliderTickBarMin"],
+section[data-testid="stSidebar"] [data-testid="stSlider"] [data-testid="stSliderTickBarMax"] {
+    display: none !important;
 }
 
 /* ──────────────────────────────────────────────────────────
