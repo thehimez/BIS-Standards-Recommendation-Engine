@@ -349,17 +349,27 @@ section[data-testid="stMain"] .block-container {
     white-space: nowrap;
 }
 
-/* ── Footer ── */
+/* ── Footer — full width, fixed at bottom ── */
 .bis-footer {
     background: var(--bis-navy-dark);
     border-top: 3px solid var(--bis-saffron);
     color: rgba(255,255,255,.55);
     font-size: 11px;
-    padding: 14px 24px;
-    margin-top: 32px;
+    padding: 12px 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    z-index: 150 !important;
+    box-sizing: border-box !important;
+}
+/* Add bottom padding to main so content isn't hidden behind footer */
+section[data-testid="stMain"] .block-container {
+    padding-bottom: 60px !important;
 }
 
 /* ── Expander ── */
@@ -382,18 +392,23 @@ section[data-testid="stSidebar"] .stButton > button {
     background: var(--bis-white) !important;
     border: 1px solid var(--bis-border) !important;
     border-radius: 20px !important;
-    padding: 6px 12px !important;
+    padding: 5px 12px !important;
     font-size: 11.5px !important;
     font-weight: 500 !important;
     color: var(--bis-muted) !important;
     width: 100% !important;
     text-align: left !important;
-    margin-bottom: 5px !important;
+    margin-bottom: 0 !important;
     white-space: normal !important;
     height: auto !important;
-    line-height: 1.5 !important;
+    min-height: 0 !important;
+    line-height: 1.4 !important;
     letter-spacing: .1px !important;
     transition: all .15s !important;
+}
+/* Collapse the gap Streamlit adds between each button widget */
+section[data-testid="stSidebar"] .stButton {
+    margin-bottom: 4px !important;
 }
 section[data-testid="stSidebar"] .stButton > button:hover {
     background: var(--bis-light) !important;
