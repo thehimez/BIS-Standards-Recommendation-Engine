@@ -118,16 +118,16 @@ html, body, [class*="css"] {
     background: rgba(255,255,255,.05);
 }
 
-/* ── Sidebar — always visible, fixed to left, full height ── */
+/* ── Sidebar — always visible, fixed to left, below top banners ── */
 section[data-testid="stSidebar"] {
     background: var(--bis-white) !important;
     border-right: 1px solid var(--bis-border) !important;
     min-width: 260px !important;
     max-width: 260px !important;
     width: 260px !important;
-    height: 100vh !important;
+    height: calc(100vh - 152px) !important;
     position: fixed !important;
-    top: 0 !important;
+    top: 152px !important;
     left: 0 !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
@@ -151,10 +151,24 @@ button[data-testid="collapsedControl"],
 /* Push the main content area to the right of the fixed sidebar */
 section[data-testid="stMain"] {
     margin-left: 260px !important;
+    margin-top: 0 !important;
 }
-/* Also push our custom full-width HTML banners right */
+/* Full-width banners span the entire viewport including over sidebar */
 .gov-banner, .bis-header, .bis-nav {
-    margin-left: 260px !important;
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 200 !important;
+    width: 100vw !important;
+    box-sizing: border-box !important;
+}
+.gov-banner  { top: 0 !important; }
+.bis-header  { top: 28px !important; }
+.bis-nav     { top: 122px !important; }
+
+/* Push main content below the fixed banners */
+section[data-testid="stMain"] .block-container {
+    padding-top: 170px !important;
 }
 
 /* ── Sidebar section headers ── */
