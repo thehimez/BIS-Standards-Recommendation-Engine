@@ -19,6 +19,8 @@
 
 <img src="demo.jpg" width="100%"/>
 
+<h3 align="center">🎥 YouTube Video Tutorial</h3>
+
 <p align="center">
   <a href="https://www.youtube.com/watch?v=La95MIYdW_M">
     <img src="https://img.youtube.com/vi/La95MIYdW_M/maxresdefault.jpg" width="600"/>
