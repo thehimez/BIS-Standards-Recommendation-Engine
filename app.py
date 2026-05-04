@@ -28,14 +28,20 @@ st.markdown("""
 <style>
 /* ── Root palette ── */
 :root {
-    --bis-navy:       #003580;
-    --bis-navy-dark:  #002060;
-    --bis-saffron:    #FF6B00;
-    --bis-border:     #C8D4E8;
-    --bis-text:       #1A1A2E;
-    --bis-muted:      #5A6A8A;
-    --bis-light:      #EEF3FF;
-    --bis-white:      #FFFFFF;
+    --bis-navy:      #003580;
+    --bis-navy-dark: #002060;
+    --bis-saffron:   #FF6B00;
+    --bis-border:    #C8D4E8;
+    --bis-text:      #1A1A2E;
+    --bis-muted:     #5A6A8A;
+    --bis-light:     #EEF3FF;
+    --bis-white:     #FFFFFF;
+
+    /* Heights of fixed banners — adjust here if layout shifts */
+    --h-govbanner: 29px;
+    --h-header:    93px;
+    --h-nav:       37px;
+    --h-banners:   159px;   /* sum of the three above */
 }
 
 /* ── Global reset ── */
@@ -46,23 +52,39 @@ html, body, [class*="css"] {
 #MainMenu, footer, header { visibility: hidden; }
 .block-container { padding-top: 0 !important; }
 
-/* ── Government top banner ── */
+/* ──────────────────────────────────────────────────────────
+   FIXED BANNERS — gov bar / site header / nav
+────────────────────────────────────────────────────────── */
+.gov-banner, .bis-header, .bis-nav {
+    position: fixed !important;
+    left: 0; right: 0;
+    width: 100vw;
+    box-sizing: border-box;
+    z-index: 300;
+}
+
 .gov-banner {
+    top: 0;
+    height: var(--h-govbanner);
     background: var(--bis-navy-dark);
     color: rgba(255,255,255,.7);
     font-size: 11px;
     padding: 5px 24px;
     letter-spacing: .3px;
+    display: flex;
+    align-items: center;
 }
 
-/* ── Site header ── */
 .bis-header {
+    top: var(--h-govbanner);
+    height: var(--h-header);
     background: var(--bis-navy);
     border-bottom: 4px solid var(--bis-saffron);
     padding: 14px 24px;
     display: flex;
     align-items: center;
     gap: 16px;
+    box-sizing: border-box;
 }
 .bis-header h1 {
     font-family: 'Noto Serif', serif !important;
@@ -90,14 +112,19 @@ html, body, [class*="css"] {
     white-space: nowrap;
 }
 
-/* ── Nav bar ── */
 .bis-nav {
+    top: calc(var(--h-govbanner) + var(--h-header));
+    height: var(--h-nav);
     background: var(--bis-navy-dark);
     display: flex;
+    align-items: center;
     border-bottom: 1px solid rgba(255,255,255,.1);
 }
 .bis-nav-item {
-    padding: 9px 16px;
+    padding: 0 16px;
+    height: 100%;
+    display: flex;
+    align-items: center;
     font-size: 11px;
     color: rgba(255,255,255,.7);
     text-transform: uppercase;
@@ -105,6 +132,7 @@ html, body, [class*="css"] {
     font-weight: 500;
     border-bottom: 3px solid transparent;
     cursor: default;
+    box-sizing: border-box;
 }
 .bis-nav-item.active {
     color: #fff;
@@ -112,98 +140,85 @@ html, body, [class*="css"] {
     background: rgba(255,255,255,.05);
 }
 
-/* ────────────────────────────────────────────────────────
-   FIXED BANNERS — full viewport width, stacked at top
-──────────────────────────────────────────────────────── */
-.gov-banner, .bis-header, .bis-nav {
-    position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100vw !important;
-    box-sizing: border-box !important;
-    z-index: 200 !important;
-}
-.gov-banner { top: 0;    height: 28px; }
-.bis-header { top: 28px; height: 94px; }
-.bis-nav    { top: 122px; height: 36px; }
-
-/* ────────────────────────────────────────────────────────
+/* ──────────────────────────────────────────────────────────
    SIDEBAR
-   Streamlit renders a hidden header row (~48px) containing
-   the «» collapse button. We:
-     1. Hide the button itself
-     2. Use negative margin-top on the content to pull it up
-        and cover that dead space
-   top: 158px = 28 (banner) + 94 (header) + 36 (nav)
-──────────────────────────────────────────────────────── */
+   top = exact bottom of all 3 fixed banners
+   We also completely suppress Streamlit's own header row
+   (the one containing the «» collapse button).
+────────────────────────────────────────────────────────── */
 section[data-testid="stSidebar"] {
     background: var(--bis-white) !important;
     border-right: 1px solid var(--bis-border) !important;
-    min-width: 230px !important;
-    max-width: 230px !important;
-    width:     230px !important;
+    min-width: 232px !important;
+    max-width: 232px !important;
+    width:     232px !important;
     position: fixed !important;
-    top: 158px !important;
+    top: var(--h-banners) !important;
     left: 0 !important;
     bottom: 40px !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
-    z-index: 100 !important;
+    z-index: 200 !important;
     display: block !important;
     visibility: visible !important;
     transform: none !important;
     transition: none !important;
-    /* hide scrollbar but keep scrollable */
     scrollbar-width: none;
 }
 section[data-testid="stSidebar"]::-webkit-scrollbar { display: none; }
 
-/* Hide the collapse «» button and its container row */
-button[data-testid="collapsedControl"],
-[data-testid="stSidebarCollapsedControl"],
-section[data-testid="stSidebar"] button[kind="header"],
-section[data-testid="stSidebar"] [data-testid="stSidebarHeader"] {
+/* ── Nuke EVERY layer of Streamlit's injected spacing ── */
+section[data-testid="stSidebar"],
+section[data-testid="stSidebar"] > div,
+section[data-testid="stSidebar"] > div > div,
+section[data-testid="stSidebar"] .block-container,
+section[data-testid="stSidebar"] .block-container > div,
+section[data-testid="stSidebar"] .block-container > div > div,
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"],
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div,
+section[data-testid="stSidebar"] [data-testid="element-container"] {
+    margin-top:     0 !important;
+    padding-top:    0 !important;
+    margin-bottom:  0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* ── Kill the gap Streamlit reserves for the collapse button ── */
+section[data-testid="stSidebar"] [data-testid="stSidebarHeader"],
+section[data-testid="stSidebar"] > div > div:first-child:has(button),
+section[data-testid="stSidebar"] > div:first-child > div:first-child {
     display: none !important;
     height: 0 !important;
+    min-height: 0 !important;
     overflow: hidden !important;
 }
 
-/* The sidebar's inner block-container — Streamlit adds ~48px top padding
-   for the header row. We pull the content back up with negative margin. */
-section[data-testid="stSidebar"] .block-container {
-    padding: 0 !important;
-    margin: 0 !important;
+/* Hide the collapse toggle button wherever it appears */
+button[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"],
+section[data-testid="stSidebar"] button[kind="header"] {
+    display: none !important;
 }
 
-/* Every wrapper layer Streamlit nests — all zeros */
-section[data-testid="stSidebar"] > div,
-section[data-testid="stSidebar"] > div > div,
-section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
-    padding-top: 0 !important;
-    margin-top:  0 !important;
-    gap: 0 !important;
-}
-
-/* Streamlit injects a top spacer div with inline height — kill it */
-section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:first-child:empty,
-section[data-testid="stSidebar"] .block-container > div > div[style*="height"] {
+/* ── Destroy inline-height spacer divs Streamlit injects ── */
+section[data-testid="stSidebar"] div[style*="height:"]:empty,
+section[data-testid="stSidebar"] div[style*="min-height:"]:empty {
     display: none !important;
     height: 0 !important;
     min-height: 0 !important;
 }
 
-/* All element containers inside sidebar — no margin */
-section[data-testid="stSidebar"] [data-testid="element-container"] {
-    margin: 0 !important;
-    padding: 0 !important;
+/* Zero gap between stacked widget rows */
+section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
+    gap: 0 !important;
 }
 
-/* ── Main content pushed right & below banners ── */
+/* ── Push main content area right and down ── */
 section[data-testid="stMain"] {
-    margin-left: 230px !important;
+    margin-left: 232px !important;
 }
 section[data-testid="stMain"] .block-container {
-    padding-top:    170px !important;
+    padding-top:    calc(var(--h-banners) + 16px) !important;
     padding-left:   3rem !important;
     padding-right:  3rem !important;
     padding-bottom: 60px !important;
@@ -211,9 +226,9 @@ section[data-testid="stMain"] .block-container {
     margin-right: auto !important;
 }
 
-/* ────────────────────────────────────────────────────────
+/* ──────────────────────────────────────────────────────────
    SIDEBAR SECTION HEADERS
-──────────────────────────────────────────────────────── */
+────────────────────────────────────────────────────────── */
 .sidebar-head {
     display: block;
     width: 100%;
@@ -230,29 +245,25 @@ section[data-testid="stMain"] .block-container {
     background: rgba(255,107,0,.05);
 }
 
-/* ────────────────────────────────────────────────────────
-   SLIDER SECTION — its own padded block
-──────────────────────────────────────────────────────── */
-section[data-testid="stSidebar"] .stSlider {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-section[data-testid="stSidebar"] .stSlider > div {
-    padding: 10px 14px 14px !important;
+/* ──────────────────────────────────────────────────────────
+   SLIDER
+   Give it generous padding by targeting the widget's own
+   outermost div rendered by Streamlit.
+────────────────────────────────────────────────────────── */
+section[data-testid="stSidebar"] [data-testid="stSlider"] {
+    padding: 12px 14px 16px !important;
     margin: 0 !important;
     box-sizing: border-box !important;
 }
-section[data-testid="stSidebar"] .stSlider label {
+section[data-testid="stSidebar"] [data-testid="stSlider"] label {
     font-size: 11px !important;
     font-weight: 600 !important;
     color: var(--bis-muted) !important;
     text-transform: uppercase;
     letter-spacing: .5px;
     display: block !important;
-    margin-bottom: 6px !important;
-    padding-top: 0 !important;
+    margin-bottom: 8px !important;
 }
-/* Slider thumb colour */
 .stSlider [data-baseweb="slider"] [role="slider"] {
     background: var(--bis-navy) !important;
 }
@@ -260,21 +271,21 @@ section[data-testid="stSidebar"] .stSlider label {
     background: var(--bis-navy) !important;
 }
 
-/* ────────────────────────────────────────────────────────
+/* ──────────────────────────────────────────────────────────
    CHIP BUTTONS
-──────────────────────────────────────────────────────── */
+────────────────────────────────────────────────────────── */
 section[data-testid="stSidebar"] .stButton {
-    margin: 0 !important;
     padding: 3px 10px !important;
+    margin: 0 !important;
 }
 section[data-testid="stSidebar"] .stButton:first-of-type {
-    padding-top: 8px !important;   /* space below "Sample Queries" header */
+    padding-top: 8px !important;
 }
 section[data-testid="stSidebar"] .stButton > button {
     background: var(--bis-white) !important;
     border: 1px solid var(--bis-border) !important;
     border-radius: 20px !important;
-    padding: 6px 14px !important;
+    padding: 7px 14px !important;
     font-size: 12px !important;
     font-weight: 500 !important;
     color: var(--bis-muted) !important;
@@ -298,12 +309,8 @@ section[data-testid="stSidebar"] .stButton > button:focus {
     box-shadow: none !important;
     outline: none !important;
 }
-/* No gap stacking between sidebar widget wrappers */
-section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
-    gap: 0 !important;
-}
 
-/* ── Primary (main) button ── */
+/* ── Main area primary button ── */
 .stButton > button[kind="primary"] {
     background: var(--bis-navy) !important;
     border: none !important;
@@ -460,7 +467,7 @@ section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
     left: 0 !important;
     right: 0 !important;
     width: 100vw !important;
-    z-index: 150 !important;
+    z-index: 250 !important;
     box-sizing: border-box !important;
 }
 
@@ -546,11 +553,11 @@ def get_cached_standard_count() -> int | None:
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
 
-    # ── SEARCH SETTINGS ──────────────────────────────────────────────────────
+    # SEARCH SETTINGS
     st.markdown('<span class="sidebar-head">Search Settings</span>', unsafe_allow_html=True)
     top_k = st.slider("Number of results", 1, 10, 5)
 
-    # ── SAMPLE QUERIES ────────────────────────────────────────────────────────
+    # SAMPLE QUERIES
     st.markdown('<span class="sidebar-head">Sample Queries</span>', unsafe_allow_html=True)
 
     samples = [
@@ -586,7 +593,7 @@ with st.sidebar:
 
     pick = st.session_state.picked_sample
 
-    # ── QUICK LINKS ───────────────────────────────────────────────────────────
+    # QUICK LINKS
     st.markdown('<span class="sidebar-head">Quick Links</span>', unsafe_allow_html=True)
     st.markdown("""
     <div style="padding:10px 14px 16px;font-size:13px;color:#5A6A8A;line-height:2.3;">
