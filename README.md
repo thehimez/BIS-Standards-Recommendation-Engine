@@ -27,6 +27,13 @@
   </a>
 </p>
 
+<p align="center">
+  🚀 <b>Try the Live App</b> 🌐 <br><br>
+  👉 <a href="https://bisstandardrecomender.streamlit.app/" target="_blank">
+    https://bisstandardrecomender.streamlit.app/
+  </a> ✨
+</p>
+
 # 💻 Local Setup
 
 Run the BIS Standards Recommendation Engine locally in under **2 minutes**.
