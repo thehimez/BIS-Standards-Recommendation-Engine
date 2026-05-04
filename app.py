@@ -31,7 +31,6 @@ st.markdown("""
     --bis-navy:       #003580;
     --bis-navy-dark:  #002060;
     --bis-saffron:    #FF6B00;
-    --bis-cream:      #F9F7F2;
     --bis-border:     #C8D4E8;
     --bis-text:       #1A1A2E;
     --bis-muted:      #5A6A8A;
@@ -39,13 +38,11 @@ st.markdown("""
     --bis-white:      #FFFFFF;
 }
 
-/* ── Global font override ── */
+/* ── Global reset ── */
 html, body, [class*="css"] {
     font-family: 'Noto Sans', sans-serif !important;
     color: var(--bis-text);
 }
-
-/* ── Hide default Streamlit chrome ── */
 #MainMenu, footer, header { visibility: hidden; }
 .block-container { padding-top: 0 !important; }
 
@@ -56,7 +53,6 @@ html, body, [class*="css"] {
     font-size: 11px;
     padding: 5px 24px;
     letter-spacing: .3px;
-    margin-bottom: 0;
 }
 
 /* ── Site header ── */
@@ -67,7 +63,6 @@ html, body, [class*="css"] {
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-bottom: 0;
 }
 .bis-header h1 {
     font-family: 'Noto Serif', serif !important;
@@ -100,7 +95,6 @@ html, body, [class*="css"] {
     background: var(--bis-navy-dark);
     display: flex;
     border-bottom: 1px solid rgba(255,255,255,.1);
-    margin-bottom: 0;
 }
 .bis-nav-item {
     padding: 9px 16px;
@@ -118,17 +112,38 @@ html, body, [class*="css"] {
     background: rgba(255,255,255,.05);
 }
 
-/* ────────────────────────────────────────────────
-   SIDEBAR — fixed, flush, zero gaps
-──────────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────
+   FIXED BANNERS — full viewport width, stacked at top
+──────────────────────────────────────────────────────── */
+.gov-banner, .bis-header, .bis-nav {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    box-sizing: border-box !important;
+    z-index: 200 !important;
+}
+.gov-banner { top: 0;    height: 28px; }
+.bis-header { top: 28px; height: 94px; }
+.bis-nav    { top: 122px; height: 36px; }
+
+/* ────────────────────────────────────────────────────────
+   SIDEBAR
+   Streamlit renders a hidden header row (~48px) containing
+   the «» collapse button. We:
+     1. Hide the button itself
+     2. Use negative margin-top on the content to pull it up
+        and cover that dead space
+   top: 158px = 28 (banner) + 94 (header) + 36 (nav)
+──────────────────────────────────────────────────────── */
 section[data-testid="stSidebar"] {
     background: var(--bis-white) !important;
     border-right: 1px solid var(--bis-border) !important;
-    min-width: 240px !important;
-    max-width: 240px !important;
-    width: 240px !important;
+    min-width: 230px !important;
+    max-width: 230px !important;
+    width:     230px !important;
     position: fixed !important;
-    top: 152px !important;
+    top: 158px !important;
     left: 0 !important;
     bottom: 40px !important;
     overflow-y: auto !important;
@@ -138,105 +153,94 @@ section[data-testid="stSidebar"] {
     visibility: visible !important;
     transform: none !important;
     transition: none !important;
+    /* hide scrollbar but keep scrollable */
+    scrollbar-width: none;
+}
+section[data-testid="stSidebar"]::-webkit-scrollbar { display: none; }
+
+/* Hide the collapse «» button and its container row */
+button[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"],
+section[data-testid="stSidebar"] button[kind="header"],
+section[data-testid="stSidebar"] [data-testid="stSidebarHeader"] {
+    display: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
 }
 
-/* Zero out every layer of margin/padding Streamlit injects */
-section[data-testid="stSidebar"],
+/* The sidebar's inner block-container — Streamlit adds ~48px top padding
+   for the header row. We pull the content back up with negative margin. */
+section[data-testid="stSidebar"] .block-container {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Every wrapper layer Streamlit nests — all zeros */
 section[data-testid="stSidebar"] > div,
 section[data-testid="stSidebar"] > div > div,
-section[data-testid="stSidebar"] .block-container,
-section[data-testid="stSidebar"] .block-container > div,
-section[data-testid="stSidebar"] .block-container > div > div,
-section[data-testid="stSidebar"] [data-testid="stVerticalBlock"],
-section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div {
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
     padding-top: 0 !important;
-    margin-top: 0 !important;
-    padding-bottom: 0 !important;
+    margin-top:  0 !important;
+    gap: 0 !important;
 }
 
-/* Collapse Streamlit injected spacer divs */
-section[data-testid="stSidebar"] .block-container > div > div[style*="height"],
-section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div[style*="flex-direction"] > div:empty {
+/* Streamlit injects a top spacer div with inline height — kill it */
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:first-child:empty,
+section[data-testid="stSidebar"] .block-container > div > div[style*="height"] {
     display: none !important;
     height: 0 !important;
     min-height: 0 !important;
 }
 
-/* Hide collapse toggle */
-section[data-testid="stSidebar"] button[kind="header"],
-button[data-testid="collapsedControl"],
-[data-testid="stSidebarCollapsedControl"] {
-    display: none !important;
-}
-
-/* Zero gap between stacked elements inside sidebar */
-section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
-    gap: 0 !important;
-}
+/* All element containers inside sidebar — no margin */
 section[data-testid="stSidebar"] [data-testid="element-container"] {
     margin: 0 !important;
     padding: 0 !important;
 }
 
-/* ── Push main content right of sidebar ── */
+/* ── Main content pushed right & below banners ── */
 section[data-testid="stMain"] {
-    margin-left: 240px !important;
-    margin-top: 0 !important;
+    margin-left: 230px !important;
 }
-
-/* ── Fixed banners span full viewport ── */
-.gov-banner, .bis-header, .bis-nav {
-    position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 200 !important;
-    width: 100vw !important;
-    box-sizing: border-box !important;
-}
-.gov-banner { top: 0 !important; }
-.bis-header { top: 28px !important; }
-.bis-nav    { top: 122px !important; }
-
-/* ── Main content padding ── */
 section[data-testid="stMain"] .block-container {
-    padding-top: 170px !important;
-    padding-left: 3rem !important;
-    padding-right: 3rem !important;
+    padding-top:    170px !important;
+    padding-left:   3rem !important;
+    padding-right:  3rem !important;
     padding-bottom: 60px !important;
     max-width: 960px !important;
     margin-right: auto !important;
 }
 
-/* ────────────────────────────────────────────────
-   SIDEBAR SECTION HEADERS — flush, no margin
-──────────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────
+   SIDEBAR SECTION HEADERS
+──────────────────────────────────────────────────────── */
 .sidebar-head {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 9px 13px;
+    margin: 0;
     font-size: 10px;
     font-weight: 700;
     color: var(--bis-saffron);
     text-transform: uppercase;
     letter-spacing: .9px;
+    line-height: 1;
     border-left: 3px solid var(--bis-saffron);
     background: rgba(255,107,0,.05);
-    padding: 8px 12px;
-    margin: 0 !important;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    line-height: 1;
 }
 
-/* ────────────────────────────────────────────────
-   SLIDER — padded container via HTML wrapper
-──────────────────────────────────────────────── */
-.sidebar-slider-wrap {
-    padding: 10px 14px 14px 14px;
-    box-sizing: border-box;
-}
-
+/* ────────────────────────────────────────────────────────
+   SLIDER SECTION — its own padded block
+──────────────────────────────────────────────────────── */
 section[data-testid="stSidebar"] .stSlider {
     margin: 0 !important;
     padding: 0 !important;
+}
+section[data-testid="stSidebar"] .stSlider > div {
+    padding: 10px 14px 14px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
 }
 section[data-testid="stSidebar"] .stSlider label {
     font-size: 11px !important;
@@ -245,9 +249,10 @@ section[data-testid="stSidebar"] .stSlider label {
     text-transform: uppercase;
     letter-spacing: .5px;
     display: block !important;
-    margin-bottom: 4px !important;
+    margin-bottom: 6px !important;
     padding-top: 0 !important;
 }
+/* Slider thumb colour */
 .stSlider [data-baseweb="slider"] [role="slider"] {
     background: var(--bis-navy) !important;
 }
@@ -255,17 +260,15 @@ section[data-testid="stSidebar"] .stSlider label {
     background: var(--bis-navy) !important;
 }
 
-/* ────────────────────────────────────────────────
-   CHIP BUTTONS — padded container via HTML wrapper
-──────────────────────────────────────────────── */
-.sidebar-chips-wrap {
-    padding: 8px 10px 10px 10px;
-    box-sizing: border-box;
-}
-
+/* ────────────────────────────────────────────────────────
+   CHIP BUTTONS
+──────────────────────────────────────────────────────── */
 section[data-testid="stSidebar"] .stButton {
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 3px 10px !important;
+}
+section[data-testid="stSidebar"] .stButton:first-of-type {
+    padding-top: 8px !important;   /* space below "Sample Queries" header */
 }
 section[data-testid="stSidebar"] .stButton > button {
     background: var(--bis-white) !important;
@@ -277,7 +280,6 @@ section[data-testid="stSidebar"] .stButton > button {
     color: var(--bis-muted) !important;
     width: 100% !important;
     text-align: left !important;
-    margin: 3px 0 !important;
     white-space: normal !important;
     height: auto !important;
     min-height: 0 !important;
@@ -296,17 +298,12 @@ section[data-testid="stSidebar"] .stButton > button:focus {
     box-shadow: none !important;
     outline: none !important;
 }
-
-/* ── Selectbox label ── */
-.stSelectbox label {
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    color: var(--bis-muted) !important;
-    text-transform: uppercase;
-    letter-spacing: .5px;
+/* No gap stacking between sidebar widget wrappers */
+section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
+    gap: 0 !important;
 }
 
-/* ── Primary (main area) button ── */
+/* ── Primary (main) button ── */
 .stButton > button[kind="primary"] {
     background: var(--bis-navy) !important;
     border: none !important;
@@ -384,7 +381,7 @@ section[data-testid="stSidebar"] .stButton > button:focus {
     gap: 6px;
     align-items: center;
 }
-.bis-breadcrumb .sep { color: var(--bis-border); }
+.bis-breadcrumb .sep     { color: var(--bis-border); }
 .bis-breadcrumb .current { color: var(--bis-navy); font-weight: 500; }
 .bis-page-title {
     display: flex;
@@ -418,8 +415,7 @@ section[data-testid="stSidebar"] .stButton > button:focus {
     padding: 2px 0 6px;
 }
 .result-rank {
-    width: 28px;
-    height: 28px;
+    width: 28px; height: 28px;
     background: var(--bis-navy);
     color: #fff;
     border-radius: 4px;
@@ -550,15 +546,12 @@ def get_cached_standard_count() -> int | None:
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
 
-    # SEARCH SETTINGS
-    st.markdown('<div class="sidebar-head">Search Settings</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sidebar-slider-wrap">', unsafe_allow_html=True)
+    # ── SEARCH SETTINGS ──────────────────────────────────────────────────────
+    st.markdown('<span class="sidebar-head">Search Settings</span>', unsafe_allow_html=True)
     top_k = st.slider("Number of results", 1, 10, 5)
-    st.markdown('</div>', unsafe_allow_html=True)
 
-    # SAMPLE QUERIES
-    st.markdown('<div class="sidebar-head">Sample Queries</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sidebar-chips-wrap">', unsafe_allow_html=True)
+    # ── SAMPLE QUERIES ────────────────────────────────────────────────────────
+    st.markdown('<span class="sidebar-head">Sample Queries</span>', unsafe_allow_html=True)
 
     samples = [
         "We manufacture 33 Grade Ordinary Portland Cement.",
@@ -591,12 +584,10 @@ with st.sidebar:
             st.session_state.picked_sample = "" if is_active else full
             st.rerun()
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
     pick = st.session_state.picked_sample
 
-    # QUICK LINKS
-    st.markdown('<div class="sidebar-head">Quick Links</div>', unsafe_allow_html=True)
+    # ── QUICK LINKS ───────────────────────────────────────────────────────────
+    st.markdown('<span class="sidebar-head">Quick Links</span>', unsafe_allow_html=True)
     st.markdown("""
     <div style="padding:10px 14px 16px;font-size:13px;color:#5A6A8A;line-height:2.3;">
       📄 &nbsp;SP 21 : 2005 Handbook<br>
@@ -610,10 +601,8 @@ with st.sidebar:
 # ── Main content area ─────────────────────────────────────────────────────────
 st.markdown("""
 <div class="bis-breadcrumb">
-  <span>Home</span>
-  <span class="sep">›</span>
-  <span>Standards Search</span>
-  <span class="sep">›</span>
+  <span>Home</span><span class="sep">›</span>
+  <span>Standards Search</span><span class="sep">›</span>
   <span class="current">Recommend Standards</span>
 </div>
 <div class="bis-page-title">
@@ -640,13 +629,11 @@ if st.button("Search Standards", type="primary", use_container_width=True):
             recs = pipeline.recommend(query, top_k=top_k)
             latency = time.perf_counter() - t0
 
-            # ── Metrics row ───────────────────────────────────────────────────
             m1, m2, m3 = st.columns(3)
             m1.metric("Response Time", f"{latency * 1000:.0f} ms")
             m2.metric("Standards Found", len(recs))
             m3.metric("Knowledge Base", "SP 21 : 2005")
 
-            # ── Section heading ───────────────────────────────────────────────
             st.markdown("""
             <div style="display:flex;align-items:center;justify-content:space-between;
                         margin:20px 0 10px">
@@ -660,7 +647,6 @@ if st.button("Search Standards", type="primary", use_container_width=True):
             </div>
             """.format(len(recs), "s" if len(recs) != 1 else ""), unsafe_allow_html=True)
 
-            # ── Result cards ──────────────────────────────────────────────────
             for i, r in enumerate(recs, 1):
                 with st.container(border=True):
                     st.markdown(f"""
@@ -681,7 +667,6 @@ if st.button("Search Standards", type="primary", use_container_width=True):
                         unsafe_allow_html=True,
                     )
 
-            # ── Raw JSON expander ─────────────────────────────────────────────
             with st.expander("Raw JSON (matches submission schema)"):
                 st.json({
                     "query": query,
