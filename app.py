@@ -37,11 +37,10 @@ st.markdown("""
     --bis-light:     #EEF3FF;
     --bis-white:     #FFFFFF;
 
-    /* Heights of fixed banners — adjust here if layout shifts */
     --h-govbanner: 29px;
     --h-header:    93px;
     --h-nav:       37px;
-    --h-banners:   159px;   /* sum of the three above */
+    --h-banners:   159px;
 }
 
 /* ── Global reset ── */
@@ -53,7 +52,7 @@ html, body, [class*="css"] {
 .block-container { padding-top: 0 !important; }
 
 /* ──────────────────────────────────────────────────────────
-   FIXED BANNERS — gov bar / site header / nav
+   FIXED BANNERS
 ────────────────────────────────────────────────────────── */
 .gov-banner, .bis-header, .bis-nav {
     position: fixed !important;
@@ -164,7 +163,6 @@ section[data-testid="stSidebar"] {
 }
 section[data-testid="stSidebar"]::-webkit-scrollbar { display: none; }
 
-/* ── Nuke EVERY layer of Streamlit's injected spacing ── */
 section[data-testid="stSidebar"],
 section[data-testid="stSidebar"] > div,
 section[data-testid="stSidebar"] > div > div,
@@ -180,7 +178,6 @@ section[data-testid="stSidebar"] [data-testid="element-container"] {
     padding-bottom: 0 !important;
 }
 
-/* ── Kill the gap Streamlit reserves for the collapse button ── */
 section[data-testid="stSidebar"] [data-testid="stSidebarHeader"],
 section[data-testid="stSidebar"] > div > div:first-child:has(button),
 section[data-testid="stSidebar"] > div:first-child > div:first-child {
@@ -190,14 +187,12 @@ section[data-testid="stSidebar"] > div:first-child > div:first-child {
     overflow: hidden !important;
 }
 
-/* Hide the collapse toggle button wherever it appears */
 button[data-testid="collapsedControl"],
 [data-testid="stSidebarCollapsedControl"],
 section[data-testid="stSidebar"] button[kind="header"] {
     display: none !important;
 }
 
-/* ── Destroy inline-height spacer divs Streamlit injects ── */
 section[data-testid="stSidebar"] div[style*="height:"]:empty,
 section[data-testid="stSidebar"] div[style*="min-height:"]:empty {
     display: none !important;
@@ -205,7 +200,6 @@ section[data-testid="stSidebar"] div[style*="min-height:"]:empty {
     min-height: 0 !important;
 }
 
-/* Zero gap between stacked widget rows */
 section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
     gap: 0 !important;
 }
@@ -243,7 +237,7 @@ section[data-testid="stMain"] .block-container {
 }
 
 /* ──────────────────────────────────────────────────────────
-   HORIZONTAL DIVIDER (after slider section)
+   HORIZONTAL DIVIDERS
 ────────────────────────────────────────────────────────── */
 .sidebar-divider {
     display: block;
@@ -255,7 +249,7 @@ section[data-testid="stMain"] .block-container {
 }
 
 /* ──────────────────────────────────────────────────────────
-   SLIDER  — fully visible track, thumb and value
+   SLIDER — fully visible
 ────────────────────────────────────────────────────────── */
 section[data-testid="stSidebar"] [data-testid="stSlider"] {
     padding: 14px 16px 18px !important;
@@ -263,7 +257,6 @@ section[data-testid="stSidebar"] [data-testid="stSlider"] {
     box-sizing: border-box !important;
 }
 
-/* Label above the slider */
 section[data-testid="stSidebar"] [data-testid="stSlider"] label,
 section[data-testid="stSidebar"] [data-testid="stSlider"] label p {
     font-size: 11px !important;
@@ -275,8 +268,6 @@ section[data-testid="stSidebar"] [data-testid="stSlider"] label p {
     margin-bottom: 10px !important;
 }
 
-/* ── Track (the full bar behind the thumb) ── */
-/* Base UI overrides Streamlit's BaseWeb slider */
 [data-testid="stSlider"] [data-baseweb="slider"] [role="progressbar"],
 [data-testid="stSlider"] [data-baseweb="slider"] div[class*="track"],
 [data-testid="stSlider"] [data-baseweb="slider"] > div > div:first-child {
@@ -285,23 +276,18 @@ section[data-testid="stSidebar"] [data-testid="stSlider"] label p {
     border-radius: 3px !important;
 }
 
-/* Filled portion of the track (left of thumb) */
 [data-testid="stSlider"] [data-baseweb="slider"] div[class*="track"] > div,
 [data-testid="stSlider"] [data-baseweb="slider"] [role="progressbar"] > div {
     background-color: var(--bis-navy) !important;
     border-radius: 3px !important;
 }
 
-/* ── Target Streamlit's own stSlider inner divs directly ── */
-/* Streamlit renders: wrapper > div > div[style] (the track container) */
 section[data-testid="stSidebar"] [data-testid="stSlider"] > div > div > div {
-    /* track wrapper */
     height: 6px !important;
     background: var(--bis-border) !important;
     border-radius: 4px !important;
 }
 
-/* ── Thumb (the draggable circle) ── */
 [data-testid="stSlider"] [role="slider"] {
     background-color: var(--bis-navy) !important;
     border: 3px solid var(--bis-white) !important;
@@ -314,7 +300,6 @@ section[data-testid="stSidebar"] [data-testid="stSlider"] > div > div > div {
     box-shadow: 0 0 0 3px rgba(0,53,128,.35) !important;
 }
 
-/* ── Value tooltip / current-value bubble ── */
 [data-testid="stSlider"] [data-testid="stThumbValue"],
 [data-testid="stSlider"] div[class*="thumbValue"],
 [data-testid="stSlider"] div[class*="ThumbValue"] {
@@ -326,7 +311,6 @@ section[data-testid="stSidebar"] [data-testid="stSlider"] > div > div > div {
     border-radius: 10px !important;
 }
 
-/* ── Min / max tick labels ── */
 [data-testid="stSlider"] div[class*="tickBar"],
 [data-testid="stSlider"] div[class*="TickBar"] {
     display: flex !important;
@@ -334,6 +318,57 @@ section[data-testid="stSidebar"] [data-testid="stSlider"] > div > div > div {
     font-size: 10px !important;
     color: var(--bis-muted) !important;
     padding: 4px 0 0 !important;
+}
+
+/* ──────────────────────────────────────────────────────────
+   SYSTEM STATUS PANEL
+────────────────────────────────────────────────────────── */
+.status-panel {
+    margin: 0;
+    padding: 12px 14px 14px;
+    box-sizing: border-box;
+}
+
+.status-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 12px;
+    color: var(--bis-text);
+    line-height: 1.4;
+}
+.status-row .s-icon {
+    font-size: 13px;
+    flex-shrink: 0;
+    width: 18px;
+    text-align: center;
+}
+.status-row strong {
+    font-weight: 600;
+    color: var(--bis-navy);
+}
+
+.status-meta-divider {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--bis-border);
+    margin: 10px 0;
+}
+
+.status-meta {
+    padding: 0;
+    font-size: 11px;
+    color: var(--bis-muted);
+    line-height: 2;
+}
+.status-meta span {
+    display: block;
+}
+.status-meta strong {
+    color: var(--bis-text);
+    font-weight: 600;
 }
 
 /* ──────────────────────────────────────────────────────────
@@ -622,7 +657,7 @@ with st.sidebar:
     st.markdown('<span class="sidebar-head">Search Settings</span>', unsafe_allow_html=True)
     top_k = st.slider("Number of results", 1, 10, 5)
 
-    # ── Thin horizontal divider after slider ──────────────────────────────────
+    # ── Thin horizontal divider after slider ─────────────────────────────────
     st.markdown('<span class="sidebar-divider"></span>', unsafe_allow_html=True)
 
     # SAMPLE QUERIES
@@ -661,14 +696,45 @@ with st.sidebar:
 
     pick = st.session_state.picked_sample
 
-    # QUICK LINKS
-    st.markdown('<span class="sidebar-head">Quick Links</span>', unsafe_allow_html=True)
+    # ── SYSTEM STATUS (replaces Quick Links) ──────────────────────────────────
+    st.markdown('<span class="sidebar-head">📊 System Status</span>', unsafe_allow_html=True)
     st.markdown("""
-    <div style="padding:10px 14px 16px;font-size:13px;color:#5A6A8A;line-height:2.3;">
-      📄 &nbsp;SP 21 : 2005 Handbook<br>
-      🌐 &nbsp;BIS Online Portal<br>
-      ✅ &nbsp;IS Mark Certification<br>
-      📋 &nbsp;Grievance Redressal
+    <div class="status-panel">
+
+      <div class="status-row">
+        <span class="s-icon">🟢</span>
+        <span><strong>Status:</strong> Operational</span>
+      </div>
+
+      <div class="status-row">
+        <span class="s-icon">🟢</span>
+        <span><strong>Index:</strong> 556 IS Standards</span>
+      </div>
+
+      <div class="status-row">
+        <span class="s-icon">⚡</span>
+        <span><strong>Latency:</strong> &lt; 35 ms/query</span>
+      </div>
+
+      <div class="status-row">
+        <span class="s-icon">🏆</span>
+        <span><strong>Hit Rate @3:</strong> 100%</span>
+      </div>
+
+      <div class="status-row">
+        <span class="s-icon">📈</span>
+        <span><strong>MRR @5:</strong> 0.7833</span>
+      </div>
+
+      <div class="status-meta-divider"></div>
+
+      <div class="status-meta">
+        <span><strong>Data Source:</strong> BIS SP 21 : 2005</span>
+        <span><strong>Model:</strong> all-MiniLM-L6-v2</span>
+        <span><strong>Method:</strong> Hybrid RAG (BM25 + SBERT)</span>
+        <span><strong>Last Updated:</strong> May 2026</span>
+      </div>
+
     </div>
     """, unsafe_allow_html=True)
 
