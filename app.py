@@ -144,7 +144,16 @@ section[data-testid="stSidebar"] .block-container {
     padding-bottom: 0 !important;
     margin-top: 0 !important;
 }
-/* Nuke every possible source of top gap in the sidebar */
+
+/* ── Kill every source of top gap in the sidebar ── */
+section[data-testid="stSidebar"] > div:first-child {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+section[data-testid="stSidebar"] .block-container > div:first-child {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
 section[data-testid="stSidebar"] .block-container > div,
 section[data-testid="stSidebar"] .block-container > div > div,
 section[data-testid="stSidebar"] [data-testid="stVerticalBlock"],
@@ -164,7 +173,8 @@ button[data-testid="collapsedControl"],
 [data-testid="stSidebarCollapsedControl"] {
     display: none !important;
 }
-/* Push the main content area to the right of the fixed sidebar */
+
+/* ── Push the main content area to the right of the fixed sidebar ── */
 section[data-testid="stMain"] {
     margin-left: 260px !important;
     margin-top: 0 !important;
@@ -182,7 +192,7 @@ section[data-testid="stMain"] {
 .bis-header  { top: 28px !important; }
 .bis-nav     { top: 122px !important; }
 
-/* Push main content below the fixed banners, add breathing room */
+/* Push main content below the fixed banners */
 section[data-testid="stMain"] .block-container {
     padding-top: 170px !important;
     padding-left: 3rem !important;
@@ -194,29 +204,33 @@ section[data-testid="stMain"] .block-container {
 /* ── Sidebar section headers ── */
 .sidebar-head {
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--bis-saffron);
     text-transform: uppercase;
     letter-spacing: .8px;
     border-left: 3px solid var(--bis-saffron);
-    background: rgba(255,107,0,.04);
-    padding: 7px 14px;
-    margin: 0 0 6px 0;
+    background: rgba(255,107,0,.05);
+    padding: 9px 14px;
+    margin: 0;
     display: block;
     width: 100%;
     box-sizing: border-box;
 }
-.sidebar-head:first-child {
-    margin-top: 0 !important;
-}
 
-/* ── Slider label ── */
-.stSlider label, .stSelectbox label {
+/* ── Slider — sits inside a padded section below its header ── */
+section[data-testid="stSidebar"] .stSlider {
+    padding: 10px 14px 12px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+section[data-testid="stSidebar"] .stSlider label {
     font-size: 12px !important;
     font-weight: 600 !important;
     color: var(--bis-muted) !important;
     text-transform: uppercase;
     letter-spacing: .5px;
+    margin-bottom: 6px !important;
+    display: block !important;
 }
 
 /* ── Slider accent ── */
@@ -225,6 +239,64 @@ section[data-testid="stMain"] .block-container {
 }
 .stSlider [data-baseweb="slider"] div[data-testid="stThumbValue"] {
     background: var(--bis-navy) !important;
+}
+
+/* ── Sample query chip buttons in sidebar ── */
+section[data-testid="stSidebar"] .stButton > button {
+    background: var(--bis-white) !important;
+    border: 1px solid var(--bis-border) !important;
+    border-radius: 20px !important;
+    padding: 7px 14px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: var(--bis-muted) !important;
+    width: 100% !important;
+    text-align: left !important;
+    margin-bottom: 0 !important;
+    white-space: normal !important;
+    height: auto !important;
+    min-height: 0 !important;
+    line-height: 1.4 !important;
+    letter-spacing: .1px !important;
+    transition: all .15s !important;
+}
+section[data-testid="stSidebar"] .stButton > button:hover {
+    background: var(--bis-light) !important;
+    border-color: var(--bis-navy) !important;
+    color: var(--bis-navy) !important;
+    transform: translateX(2px) !important;
+}
+section[data-testid="stSidebar"] .stButton > button[data-active="true"],
+section[data-testid="stSidebar"] .stButton > button:focus {
+    background: var(--bis-navy) !important;
+    border-color: var(--bis-navy) !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* ── Chips section: add a top padding wrapper and proper gap between chips ── */
+section[data-testid="stSidebar"] .stButton {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding: 0 10px !important;
+}
+section[data-testid="stSidebar"] [data-testid="element-container"] {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
+    gap: 6px !important;
+}
+
+/* ── Selectbox label ── */
+.stSelectbox label {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: var(--bis-muted) !important;
+    text-transform: uppercase;
+    letter-spacing: .5px;
 }
 
 /* ── Primary button ── */
@@ -408,53 +480,6 @@ section[data-testid="stMain"] .block-container {
     border-radius: 4px !important;
     border-left: 3px solid var(--bis-saffron) !important;
 }
-
-/* ── Sample query chip buttons in sidebar ── */
-section[data-testid="stSidebar"] .stButton > button {
-    background: var(--bis-white) !important;
-    border: 1px solid var(--bis-border) !important;
-    border-radius: 20px !important;
-    padding: 5px 12px !important;
-    font-size: 11.5px !important;
-    font-weight: 500 !important;
-    color: var(--bis-muted) !important;
-    width: 100% !important;
-    text-align: left !important;
-    margin-bottom: 0 !important;
-    white-space: normal !important;
-    height: auto !important;
-    min-height: 0 !important;
-    line-height: 1.4 !important;
-    letter-spacing: .1px !important;
-    transition: all .15s !important;
-}
-/* Collapse ALL vertical gaps between sidebar widgets */
-section[data-testid="stSidebar"] .stButton {
-    margin-top: 0 !important;
-    margin-bottom: 2px !important;
-}
-section[data-testid="stSidebar"] [data-testid="element-container"] {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-}
-section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
-    gap: 2px !important;
-}
-section[data-testid="stSidebar"] .stButton > button:hover {
-    background: var(--bis-light) !important;
-    border-color: var(--bis-navy) !important;
-    color: var(--bis-navy) !important;
-    transform: translateX(2px) !important;
-}
-section[data-testid="stSidebar"] .stButton > button[data-active="true"],
-section[data-testid="stSidebar"] .stButton > button:focus {
-    background: var(--bis-navy) !important;
-    border-color: var(--bis-navy) !important;
-    color: #fff !important;
-    font-weight: 600 !important;
-    box-shadow: none !important;
-    outline: none !important;
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -522,10 +547,13 @@ def get_cached_standard_count() -> int | None:
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
+    # Search Settings section
     st.markdown('<div class="sidebar-head">Search Settings</div>', unsafe_allow_html=True)
     top_k = st.slider("Number of results", 1, 10, 5)
 
+    # Sample Queries section
     st.markdown('<div class="sidebar-head">Sample Queries</div>', unsafe_allow_html=True)
+
     samples = [
         "We manufacture 33 Grade Ordinary Portland Cement.",
         "Lightweight hollow concrete masonry blocks for partition walls.",
@@ -537,7 +565,6 @@ with st.sidebar:
         "Supersulphated cement for marine works.",
     ]
 
-    # Short labels for the chips
     chip_labels = [
         "33 Grade OPC",
         "Hollow Concrete Blocks",
@@ -552,59 +579,30 @@ with st.sidebar:
     if "picked_sample" not in st.session_state:
         st.session_state.picked_sample = ""
 
-    st.markdown("""
-    <style>
-    div[data-testid="stButton"].chip-btn > button {
-        background: #fff !important;
-        border: 1px solid #C8D4E8 !important;
-        border-radius: 20px !important;
-        padding: 5px 11px !important;
-        font-size: 11.5px !important;
-        font-weight: 500 !important;
-        color: #5A6A8A !important;
-        width: 100% !important;
-        text-align: left !important;
-        margin-bottom: 5px !important;
-        transition: all .15s !important;
-        white-space: normal !important;
-        height: auto !important;
-        line-height: 1.4 !important;
-    }
-    div[data-testid="stButton"].chip-btn > button:hover {
-        background: #EEF3FF !important;
-        border-color: #003580 !important;
-        color: #003580 !important;
-    }
-    div[data-testid="stButton"].chip-btn-active > button {
-        background: #003580 !important;
-        border-color: #003580 !important;
-        color: #fff !important;
-        font-weight: 600 !important;
-    }
-    div[data-testid="stButton"].chip-btn-active > button:hover {
-        background: #002060 !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    # Small top spacer so first chip doesn't kiss the header
+    st.markdown('<div style="height:6px"></div>', unsafe_allow_html=True)
 
     for label, full in zip(chip_labels, samples):
         is_active = st.session_state.picked_sample == full
-        css_class = "chip-btn-active" if is_active else "chip-btn"
-        # Inject class via a wrapper hack
-        st.markdown(f'<div data-testid="stButton" class="{css_class}">', unsafe_allow_html=True)
-        if st.button(f"{'✓ ' if is_active else ''}{label}", key=f"chip_{label}"):
+        if st.button(
+            f"{'✓ ' if is_active else ''}{label}",
+            key=f"chip_{label}",
+        ):
             if st.session_state.picked_sample == full:
                 st.session_state.picked_sample = ""
             else:
                 st.session_state.picked_sample = full
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+
+    # Small bottom spacer before Quick Links
+    st.markdown('<div style="height:4px"></div>', unsafe_allow_html=True)
 
     pick = st.session_state.picked_sample
 
+    # Quick Links section
     st.markdown('<div class="sidebar-head">Quick Links</div>', unsafe_allow_html=True)
     st.markdown("""
-    <div style="font-size:13px;color:#5A6A8A;line-height:2.2">
+    <div style="font-size:13px;color:#5A6A8A;line-height:2.4;padding:8px 14px 12px;">
       📄 &nbsp;SP 21 : 2005 Handbook<br>
       🌐 &nbsp;BIS Online Portal<br>
       ✅ &nbsp;IS Mark Certification<br>
@@ -669,7 +667,6 @@ if st.button("Search Standards", type="primary", use_container_width=True):
             # ── Result cards ──────────────────────────────────────────────────
             for i, r in enumerate(recs, 1):
                 with st.container(border=True):
-                    # Card header row
                     st.markdown(f"""
                     <div class="result-row">
                       <div class="result-rank">{i}</div>
@@ -682,7 +679,6 @@ if st.button("Search Standards", type="primary", use_container_width=True):
                       <div class="score-pill">Score: {r.score:.3f}</div>
                     </div>
                     """, unsafe_allow_html=True)
-                    # Rationale
                     st.markdown(
                         f'<div style="font-size:12px;color:#5A6A8A;'
                         f'line-height:1.6;padding:6px 0 2px">{r.rationale}</div>',
