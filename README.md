@@ -14,6 +14,7 @@
 </p>
 
 ---
+<img src="demo.jpg" width="100%"/>
 
 ## 🚀 Run This Project (2-Min Setup)
 
