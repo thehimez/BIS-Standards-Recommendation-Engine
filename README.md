@@ -13,11 +13,11 @@
   <img src="https://img.shields.io/badge/Status-Production%20Ready-black"/>
 </p>
 
-<img src="demo.jpg" width="100%"/>
-
 ---
 
 ## 🚀 Run This Project (2-Min Setup)
+
+<img src="demo.jpg" width="100%"/>
 
 # 💻 Local Setup
 
