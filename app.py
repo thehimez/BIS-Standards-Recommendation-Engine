@@ -17,6 +17,7 @@ st.set_page_config(
     page_title="BIS Standards Recommender",
     page_icon="📐",
     layout="wide",
+    initial_sidebar_state="expanded",
 )
 
 # ── Custom CSS — BIS Government Portal Theme ──────────────────────────────────
@@ -117,18 +118,43 @@ html, body, [class*="css"] {
     background: rgba(255,255,255,.05);
 }
 
-/* ── Sidebar — sticky so it stays visible while main content scrolls ── */
+/* ── Sidebar — always visible, fixed to left, full height ── */
 section[data-testid="stSidebar"] {
     background: var(--bis-white) !important;
     border-right: 1px solid var(--bis-border) !important;
-    position: sticky !important;
-    top: 0 !important;
+    min-width: 260px !important;
+    max-width: 260px !important;
+    width: 260px !important;
     height: 100vh !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
     overflow-y: auto !important;
-    align-self: flex-start !important;
+    overflow-x: hidden !important;
+    z-index: 100 !important;
+    display: block !important;
+    visibility: visible !important;
+    transform: none !important;
+    transition: none !important;
 }
 section[data-testid="stSidebar"] .block-container {
     padding-top: 16px !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+/* Hide the collapse/expand toggle button */
+section[data-testid="stSidebar"] button[kind="header"],
+button[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"] {
+    display: none !important;
+}
+/* Push the main content area to the right of the fixed sidebar */
+section[data-testid="stMain"] {
+    margin-left: 260px !important;
+}
+/* Also push our custom full-width HTML banners right */
+.gov-banner, .bis-header, .bis-nav {
+    margin-left: 260px !important;
 }
 
 /* ── Sidebar section headers ── */
