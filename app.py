@@ -166,9 +166,13 @@ section[data-testid="stMain"] {
 .bis-header  { top: 28px !important; }
 .bis-nav     { top: 122px !important; }
 
-/* Push main content below the fixed banners */
+/* Push main content below the fixed banners, add breathing room */
 section[data-testid="stMain"] .block-container {
     padding-top: 170px !important;
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+    max-width: 960px !important;
+    margin-right: auto !important;
 }
 
 /* ── Sidebar section headers ── */
