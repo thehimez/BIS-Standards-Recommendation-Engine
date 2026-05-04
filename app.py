@@ -142,9 +142,6 @@ html, body, [class*="css"] {
 
 /* ──────────────────────────────────────────────────────────
    SIDEBAR
-   top = exact bottom of all 3 fixed banners
-   We also completely suppress Streamlit's own header row
-   (the one containing the «» collapse button).
 ────────────────────────────────────────────────────────── */
 section[data-testid="stSidebar"] {
     background: var(--bis-white) !important;
@@ -246,29 +243,97 @@ section[data-testid="stMain"] .block-container {
 }
 
 /* ──────────────────────────────────────────────────────────
-   SLIDER
-   Give it generous padding by targeting the widget's own
-   outermost div rendered by Streamlit.
+   HORIZONTAL DIVIDER (after slider section)
+────────────────────────────────────────────────────────── */
+.sidebar-divider {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: var(--bis-border);
+    margin: 4px 0 0;
+    box-sizing: border-box;
+}
+
+/* ──────────────────────────────────────────────────────────
+   SLIDER  — fully visible track, thumb and value
 ────────────────────────────────────────────────────────── */
 section[data-testid="stSidebar"] [data-testid="stSlider"] {
-    padding: 12px 14px 16px !important;
+    padding: 14px 16px 18px !important;
     margin: 0 !important;
     box-sizing: border-box !important;
 }
-section[data-testid="stSidebar"] [data-testid="stSlider"] label {
+
+/* Label above the slider */
+section[data-testid="stSidebar"] [data-testid="stSlider"] label,
+section[data-testid="stSidebar"] [data-testid="stSlider"] label p {
     font-size: 11px !important;
     font-weight: 600 !important;
     color: var(--bis-muted) !important;
-    text-transform: uppercase;
-    letter-spacing: .5px;
+    text-transform: uppercase !important;
+    letter-spacing: .5px !important;
     display: block !important;
-    margin-bottom: 8px !important;
+    margin-bottom: 10px !important;
 }
-.stSlider [data-baseweb="slider"] [role="slider"] {
-    background: var(--bis-navy) !important;
+
+/* ── Track (the full bar behind the thumb) ── */
+/* Base UI overrides Streamlit's BaseWeb slider */
+[data-testid="stSlider"] [data-baseweb="slider"] [role="progressbar"],
+[data-testid="stSlider"] [data-baseweb="slider"] div[class*="track"],
+[data-testid="stSlider"] [data-baseweb="slider"] > div > div:first-child {
+    background-color: var(--bis-border) !important;
+    height: 5px !important;
+    border-radius: 3px !important;
 }
-.stSlider [data-baseweb="slider"] div[data-testid="stThumbValue"] {
+
+/* Filled portion of the track (left of thumb) */
+[data-testid="stSlider"] [data-baseweb="slider"] div[class*="track"] > div,
+[data-testid="stSlider"] [data-baseweb="slider"] [role="progressbar"] > div {
+    background-color: var(--bis-navy) !important;
+    border-radius: 3px !important;
+}
+
+/* ── Target Streamlit's own stSlider inner divs directly ── */
+/* Streamlit renders: wrapper > div > div[style] (the track container) */
+section[data-testid="stSidebar"] [data-testid="stSlider"] > div > div > div {
+    /* track wrapper */
+    height: 6px !important;
+    background: var(--bis-border) !important;
+    border-radius: 4px !important;
+}
+
+/* ── Thumb (the draggable circle) ── */
+[data-testid="stSlider"] [role="slider"] {
+    background-color: var(--bis-navy) !important;
+    border: 3px solid var(--bis-white) !important;
+    box-shadow: 0 0 0 2px var(--bis-navy) !important;
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 50% !important;
+}
+[data-testid="stSlider"] [role="slider"]:focus {
+    box-shadow: 0 0 0 3px rgba(0,53,128,.35) !important;
+}
+
+/* ── Value tooltip / current-value bubble ── */
+[data-testid="stSlider"] [data-testid="stThumbValue"],
+[data-testid="stSlider"] div[class*="thumbValue"],
+[data-testid="stSlider"] div[class*="ThumbValue"] {
     background: var(--bis-navy) !important;
+    color: #fff !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    padding: 2px 7px !important;
+    border-radius: 10px !important;
+}
+
+/* ── Min / max tick labels ── */
+[data-testid="stSlider"] div[class*="tickBar"],
+[data-testid="stSlider"] div[class*="TickBar"] {
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: 10px !important;
+    color: var(--bis-muted) !important;
+    padding: 4px 0 0 !important;
 }
 
 /* ──────────────────────────────────────────────────────────
@@ -556,6 +621,9 @@ with st.sidebar:
     # SEARCH SETTINGS
     st.markdown('<span class="sidebar-head">Search Settings</span>', unsafe_allow_html=True)
     top_k = st.slider("Number of results", 1, 10, 5)
+
+    # ── Thin horizontal divider after slider ──────────────────────────────────
+    st.markdown('<span class="sidebar-divider"></span>', unsafe_allow_html=True)
 
     # SAMPLE QUERIES
     st.markdown('<span class="sidebar-head">Sample Queries</span>', unsafe_allow_html=True)
